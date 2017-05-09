@@ -1,0 +1,15 @@
+{
+  "name": "koc-common-datetime",
+  "version": "1.0.0",
+  "description": "koc-common-datetime",
+  "main": "index.js",
+  "dependencies": {
+    "koc-common-string": "^1.0.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cq-guojia/koc-common-datetime.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
