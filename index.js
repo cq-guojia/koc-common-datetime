@@ -1,11 +1,12 @@
 "use strict";
 
 const Moment = require("moment");
+const MomentPreciseRange = require("moment-precise-range")(Moment);
 const KOCString = require("koc-common-string");
 
 const KOCDatetime = {
   /********************************
-   * Init 判断是否为有效时间
+   * Valid 判断是否为有效时间
    ********************************/
   Valid: (Value) => {
     return !!KOCDatetime.Object(Value);
@@ -14,6 +15,9 @@ const KOCDatetime = {
    * Object 取得时间对像(Moment)
    ********************************/
   Object: (Value) => {
+    if (Moment.isMoment(Value)) {
+      return Value;
+    }
     Value = Moment(Value, [
       Moment.ISO_8601,
       "YYYY-MM-DD HH:mm:ss.SSS",
@@ -24,6 +28,70 @@ const KOCDatetime = {
       "YY.MM.DD HH:mm:ss.SSS"
     ]);
     return Value.isValid() ? Value : null;
+  },
+  /********************************
+   * PreciseRange 取得时间差值
+   ********************************/
+  PreciseRange: (ValueBegin, ValueEnd) => {
+    ValueBegin = KOCDatetime.Object(ValueBegin);
+    if (!ValueBegin) {
+      return null;
+    }
+    ValueEnd = KOCDatetime.Object(ValueEnd) || Moment();
+    const Value = MomentPreciseRange(ValueBegin, ValueEnd, {returnObject: true});
+    Value.After = ValueBegin.isAfter(ValueEnd);
+    return Value;
+  },
+  /********************************
+   * PreciseRangeText 取得时间差值文字
+   ********************************/
+  PreciseRangeText: (ValueBegin, ValueEnd, Num) => {
+    if (typeof ValueEnd === "number") {
+      Num = ValueEnd;
+      ValueEnd = null;
+    }
+    const Value = KOCDatetime.PreciseRange(ValueBegin, ValueEnd);
+    if (!Value) {
+      return "";
+    }
+    Num = KOCString.ToInt(Num, -1);
+    let Text = "";
+    let Space = false;
+    if (Num !== 0 && Value.years) {
+      Text += Value.years + " 年";
+      Num--;
+    }
+    if (Num !== 0 && Value.months) {
+      Text += Value.months + " 个月";
+      Num--;
+    } else if (Text) {
+      Space = true;
+    }
+    if (Num !== 0 && Value.days) {
+      Text += (Space ? "零 " : "") + Value.days + " 天";
+      Space = false;
+      Num--;
+    } else if (Text) {
+      Space = true;
+    }
+    if (Num !== 0 && Value.hours) {
+      Text += (Space ? "零 " : "") + Value.hours + " 小时";
+      Space = false;
+      Num--;
+    } else if (Text) {
+      Space = true;
+    }
+    if (Num !== 0 && Value.minutes) {
+      Text += (Space ? "零 " : "") + Value.minutes + " 分";
+      Space = false;
+      Num--;
+    } else if (Text) {
+      Space = true;
+    }
+    if (Num !== 0 && Value.seconds) {
+      Text += (Space ? "零 " : "") + Value.seconds + " 秒";
+    }
+    return Text + " " + (Value.After ? "前" : "后");
   },
   /********************************
    * Min 取得最小时间(Moment)
