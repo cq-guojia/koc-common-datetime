@@ -39,7 +39,7 @@ const KOCDatetime = {
     }
     ValueEnd = KOCDatetime.Object(ValueEnd) || Moment();
     const Value = MomentPreciseRange(ValueBegin, ValueEnd, {returnObject: true});
-    Value.After = ValueBegin.isAfter(ValueEnd);
+    Value.After = ValueEnd.isAfter(ValueBegin);
     return Value;
   },
   /********************************
