@@ -58,40 +58,40 @@ const KOCDatetime = {
     let Text = "";
     let Space = false;
     if (Num !== 0 && Value.years) {
-      Text += Value.years + " 年";
+      Text += Value.years + "年";
       Num--;
     }
     if (Num !== 0 && Value.months) {
-      Text += Value.months + " 个月";
+      Text += Value.months + "个月";
       Num--;
     } else if (Text) {
       Space = true;
     }
     if (Num !== 0 && Value.days) {
-      Text += (Space ? "零 " : "") + Value.days + " 天";
+      Text += (Space ? " 零 " : "") + Value.days + "天";
       Space = false;
       Num--;
     } else if (Text) {
       Space = true;
     }
     if (Num !== 0 && Value.hours) {
-      Text += (Space ? "零 " : "") + Value.hours + " 小时";
+      Text += (Space ? " 零 " : "") + Value.hours + "小时";
       Space = false;
       Num--;
     } else if (Text) {
       Space = true;
     }
     if (Num !== 0 && Value.minutes) {
-      Text += (Space ? "零 " : "") + Value.minutes + " 分";
+      Text += (Space ? " 零 " : "") + Value.minutes + "分";
       Space = false;
       Num--;
     } else if (Text) {
       Space = true;
     }
     if (Num !== 0 && Value.seconds) {
-      Text += (Space ? "零 " : "") + Value.seconds + " 秒";
+      Text += (Space ? " 零 " : "") + Value.seconds + "秒";
     }
-    return Text + " " + (Value.After ? "前" : "后");
+    return Text + " " + (Value.After ? "之前" : "以后");
   },
   /********************************
    * Min 取得最小时间(Moment)
