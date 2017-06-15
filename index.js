@@ -91,7 +91,7 @@ const KOCDatetime = {
     if (Num !== 0 && Value.seconds) {
       Text += (Space ? " 零 " : "") + Value.seconds + "秒";
     }
-    return Text + " " + (Value.After ? "之前" : "以后");
+    return Text ? (Text + " " + (Value.After ? "之前" : "以后")) : "刚刚";
   },
   /********************************
    * Min 取得最小时间(Moment)
