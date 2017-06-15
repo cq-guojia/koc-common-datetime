@@ -65,6 +65,7 @@ const KOCDatetime = {
       Text += Value.months + "个月";
       Num--;
     } else if (Text) {
+      Num--;
       Space = true;
     }
     if (Num !== 0 && Value.days) {
@@ -72,7 +73,7 @@ const KOCDatetime = {
       Space = false;
       Num--;
     } else if (Text) {
-      Space && (Num--);
+      Num--;
       Space = true;
     }
     if (Num !== 0 && Value.hours) {
@@ -80,7 +81,7 @@ const KOCDatetime = {
       Space = false;
       Num--;
     } else if (Text) {
-      Space && (Num--);
+      Num--;
       Space = true;
     }
     if (Num !== 0 && Value.minutes) {
@@ -88,7 +89,7 @@ const KOCDatetime = {
       Space = false;
       Num--;
     } else if (Text) {
-      Space && (Num--);
+      Num--;
       Space = true;
     }
     if (Num !== 0 && Value.seconds) {
