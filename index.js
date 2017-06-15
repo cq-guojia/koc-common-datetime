@@ -72,6 +72,7 @@ const KOCDatetime = {
       Space = false;
       Num--;
     } else if (Text) {
+      Space && (Num--);
       Space = true;
     }
     if (Num !== 0 && Value.hours) {
@@ -79,6 +80,7 @@ const KOCDatetime = {
       Space = false;
       Num--;
     } else if (Text) {
+      Space && (Num--);
       Space = true;
     }
     if (Num !== 0 && Value.minutes) {
@@ -86,6 +88,7 @@ const KOCDatetime = {
       Space = false;
       Num--;
     } else if (Text) {
+      Space && (Num--);
       Space = true;
     }
     if (Num !== 0 && Value.seconds) {
