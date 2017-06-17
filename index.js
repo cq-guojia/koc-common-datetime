@@ -61,36 +61,40 @@ const KOCDatetime = {
       Text += Value.years + "年";
       Num--;
     }
-    if (Num !== 0 && Value.months) {
-      Text += Value.months + "个月";
+    if (Num !== 0) {
+      if (Value.months) {
+        Text += Value.months + "个月";
+      } else if (Text) {
+        Space = true;
+      }
       Num--;
-    } else if (Text) {
-      Num--;
-      Space = true;
     }
-    if (Num !== 0 && Value.days) {
-      Text += (Space ? " 零 " : "") + Value.days + "天";
-      Space = false;
+    if (Num !== 0) {
+      if (Value.days) {
+        Text += (Space ? " 零 " : "") + Value.days + "天";
+        Space = false;
+      } else if (Text) {
+        Space = true;
+      }
       Num--;
-    } else if (Text) {
-      Num--;
-      Space = true;
     }
-    if (Num !== 0 && Value.hours) {
-      Text += (Space ? " 零 " : "") + Value.hours + "小时";
-      Space = false;
+    if (Num !== 0) {
+      if (Value.hours) {
+        Text += (Space ? " 零 " : "") + Value.hours + "小时";
+        Space = false;
+      } else if (Text) {
+        Space = true;
+      }
       Num--;
-    } else if (Text) {
-      Num--;
-      Space = true;
     }
-    if (Num !== 0 && Value.minutes) {
-      Text += (Space ? " 零 " : "") + Value.minutes + "分";
-      Space = false;
+    if (Num !== 0) {
+      if (Value.minutes) {
+        Text += (Space ? " 零 " : "") + Value.minutes + "分";
+        Space = false;
+      } else if (Text) {
+        Space = true;
+      }
       Num--;
-    } else if (Text) {
-      Num--;
-      Space = true;
     }
     if (Num !== 0 && Value.seconds) {
       Text += (Space ? " 零 " : "") + Value.seconds + "秒";
