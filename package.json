@@ -1,12 +1,11 @@
 {
   "name": "koc-common-datetime",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "koc-common-datetime",
   "main": "index.js",
   "dependencies": {
     "koc-common-string": "^1.0.17",
-    "moment": "^2.18.1",
-    "moment-precise-range": "^0.2.0"
+    "moment": "^2.18.1"
   },
   "repository": {
     "type": "git",

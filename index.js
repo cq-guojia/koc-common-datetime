@@ -1,7 +1,6 @@
 "use strict";
 
 const Moment = require("moment");
-const MomentPreciseRange = require("moment-precise-range")(Moment);
 const KOCString = require("koc-common-string");
 
 const KOCDatetime = {
@@ -39,9 +38,53 @@ const KOCDatetime = {
       return null;
     }
     ValueEnd = KOCDatetime.Object(ValueEnd) || Moment();
-    const Value = MomentPreciseRange(ValueBegin, ValueEnd, {returnObject: true});
-    Value.After = ValueEnd.isAfter(ValueBegin);
-    return Value;
+    let IsAfter = true;
+    if (ValueBegin.isAfter(ValueEnd)) {
+      const tmp = ValueBegin;
+      ValueBegin = ValueEnd;
+      ValueEnd = tmp;
+      IsAfter = false;
+    }
+    let yDiff = ValueEnd.year() - ValueBegin.year();
+    let mDiff = ValueEnd.month() - ValueBegin.month();
+    let dDiff = ValueEnd.date() - ValueBegin.date();
+    let hourDiff = ValueEnd.hour() - ValueBegin.hour();
+    let minDiff = ValueEnd.minute() - ValueBegin.minute();
+    let secDiff = ValueEnd.second() - ValueBegin.second();
+    if (secDiff < 0) {
+      secDiff = 60 + secDiff;
+      minDiff--;
+    }
+    if (minDiff < 0) {
+      minDiff = 60 + minDiff;
+      hourDiff--;
+    }
+    if (hourDiff < 0) {
+      hourDiff = 24 + hourDiff;
+      dDiff--;
+    }
+    if (dDiff < 0) {
+      const daysInLastFullMonth = Moment(ValueEnd.year() + '-' + (ValueEnd.month() + 1), "YYYY-MM").subtract(1, 'months').daysInMonth();
+      if (daysInLastFullMonth < ValueBegin.date()) { // 31/01 -> 2/03
+        dDiff = daysInLastFullMonth + dDiff + (ValueBegin.date() - daysInLastFullMonth);
+      } else {
+        dDiff = daysInLastFullMonth + dDiff;
+      }
+      mDiff--;
+    }
+    if (mDiff < 0) {
+      mDiff = 12 + mDiff;
+      yDiff--;
+    }
+    return {
+      Years: Moment.duration(yDiff, 'year').asYears(),
+      Months: Moment.duration(mDiff, 'month').asMonths(),
+      Days: Moment.duration(dDiff, 'day').asDays(),
+      Hours: Moment.duration(hourDiff, 'hour').asHours(),
+      Minutes: Moment.duration(minDiff, 'minute').asMinutes(),
+      Seconds: Moment.duration(secDiff, 'second').asSeconds(),
+      After: IsAfter
+    };
   },
   /********************************
    * PreciseRangeText 取得时间差值文字
@@ -58,13 +101,13 @@ const KOCDatetime = {
     Num = KOCString.ToInt(Num, -1);
     let Text = "";
     let Space = false;
-    if (Num !== 0 && Value.years) {
-      Text += Value.years + "年";
+    if (Num !== 0 && Value.Years) {
+      Text += Value.Years + "年";
       Num--;
     }
     if (Num !== 0) {
-      if (Value.months) {
-        Text += Value.months + "个月";
+      if (Value.Months) {
+        Text += Value.Months + "个月";
         Num--;
       } else if (Text) {
         Space = true;
@@ -72,8 +115,8 @@ const KOCDatetime = {
       }
     }
     if (Num !== 0) {
-      if (Value.days) {
-        Text += (Space ? " 零 " : "") + Value.days + "天";
+      if (Value.Days) {
+        Text += (Space ? " 零 " : "") + Value.Days + "天";
         Space = false;
         Num--;
       } else if (Text) {
@@ -82,8 +125,8 @@ const KOCDatetime = {
       }
     }
     if (Num !== 0) {
-      if (Value.hours) {
-        Text += (Space ? " 零 " : "") + Value.hours + "小时";
+      if (Value.Hours) {
+        Text += (Space ? " 零 " : "") + Value.Hours + "小时";
         Space = false;
         Num--;
       } else if (Text) {
@@ -92,8 +135,8 @@ const KOCDatetime = {
       }
     }
     if (Num !== 0) {
-      if (Value.minutes) {
-        Text += (Space ? " 零 " : "") + Value.minutes + "分";
+      if (Value.Minutes) {
+        Text += (Space ? " 零 " : "") + Value.Minutes + "分";
         Space = false;
         Num--;
       } else if (Text) {
@@ -101,8 +144,8 @@ const KOCDatetime = {
         Num--;
       }
     }
-    if (Num !== 0 && Value.seconds) {
-      Text += (Space ? " 零 " : "") + Value.seconds + "秒";
+    if (Num !== 0 && Value.Seconds) {
+      Text += (Space ? " 零 " : "") + Value.Seconds + "秒";
     }
     return Text ? (Text + " " + (Value.After ? "以前" : "以后")) : "刚刚";
   },
