@@ -5,6 +5,7 @@ const MomentPreciseRange = require("moment-precise-range")(Moment);
 const KOCString = require("koc-common-string");
 
 const KOCDatetime = {
+  Moment: Moment,
   /********************************
    * Valid 判断是否为有效时间
    ********************************/
