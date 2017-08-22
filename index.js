@@ -1,20 +1,23 @@
 "use strict";
 
-const Moment = require("moment");
-const KOCString = require("koc-common-string");
+/* C */
+var Moment = require("moment");
+/* C */
+var KOCString = require("koc-common-string");
 
-const KOCDatetime = {
+/* C */
+var KOCDatetime = {
   Moment: Moment,
   /********************************
    * Valid 判断是否为有效时间
    ********************************/
-  Valid: (Value) => {
+  Valid: function (Value) {
     return !!KOCDatetime.Object(Value);
   },
   /********************************
    * Object 取得时间对像(Moment)
    ********************************/
-  Object: (Value) => {
+  Object: function (Value) {
     if (Moment.isMoment(Value)) {
       return Value;
     }
@@ -32,25 +35,33 @@ const KOCDatetime = {
   /********************************
    * PreciseRange 取得时间差值
    ********************************/
-  PreciseRange: (ValueBegin, ValueEnd) => {
+  PreciseRange: function (ValueBegin, ValueEnd) {
     ValueBegin = KOCDatetime.Object(ValueBegin);
     if (!ValueBegin) {
       return null;
     }
     ValueEnd = KOCDatetime.Object(ValueEnd) || Moment();
-    let IsAfter = true;
+    /* L */
+    var IsAfter = true;
     if (ValueBegin.isAfter(ValueEnd)) {
-      const tmp = ValueBegin;
+      /* C */
+      var tmp = ValueBegin;
       ValueBegin = ValueEnd;
       ValueEnd = tmp;
       IsAfter = false;
     }
-    let yDiff = ValueEnd.year() - ValueBegin.year();
-    let mDiff = ValueEnd.month() - ValueBegin.month();
-    let dDiff = ValueEnd.date() - ValueBegin.date();
-    let hourDiff = ValueEnd.hour() - ValueBegin.hour();
-    let minDiff = ValueEnd.minute() - ValueBegin.minute();
-    let secDiff = ValueEnd.second() - ValueBegin.second();
+    /* L */
+    var yDiff = ValueEnd.year() - ValueBegin.year();
+    /* L */
+    var mDiff = ValueEnd.month() - ValueBegin.month();
+    /* L */
+    var dDiff = ValueEnd.date() - ValueBegin.date();
+    /* L */
+    var hourDiff = ValueEnd.hour() - ValueBegin.hour();
+    /* L */
+    var minDiff = ValueEnd.minute() - ValueBegin.minute();
+    /* L */
+    var secDiff = ValueEnd.second() - ValueBegin.second();
     if (secDiff < 0) {
       secDiff = 60 + secDiff;
       minDiff--;
@@ -64,7 +75,8 @@ const KOCDatetime = {
       dDiff--;
     }
     if (dDiff < 0) {
-      const daysInLastFullMonth = Moment(ValueEnd.year() + '-' + (ValueEnd.month() + 1), "YYYY-MM").subtract(1, 'months').daysInMonth();
+      /* C */
+      var daysInLastFullMonth = Moment(ValueEnd.year() + '-' + (ValueEnd.month() + 1), "YYYY-MM").subtract(1, 'months').daysInMonth();
       if (daysInLastFullMonth < ValueBegin.date()) { // 31/01 -> 2/03
         dDiff = daysInLastFullMonth + dDiff + (ValueBegin.date() - daysInLastFullMonth);
       } else {
@@ -89,18 +101,21 @@ const KOCDatetime = {
   /********************************
    * PreciseRangeText 取得时间差值文字
    ********************************/
-  PreciseRangeText: (ValueBegin, ValueEnd, Num) => {
+  PreciseRangeText: function (ValueBegin, ValueEnd, Num) {
     if (typeof ValueEnd === "number") {
       Num = ValueEnd;
       ValueEnd = null;
     }
-    const Value = KOCDatetime.PreciseRange(ValueBegin, ValueEnd);
+    /* C */
+    var Value = KOCDatetime.PreciseRange(ValueBegin, ValueEnd);
     if (!Value) {
       return "";
     }
     Num = KOCString.ToInt(Num, -1);
-    let Text = "";
-    let Space = false;
+    /* L */
+    var Text = "";
+    /* L */
+    var Space = false;
     if (Num !== 0 && Value.Years) {
       Text += Value.Years + "年";
       Num--;
@@ -153,7 +168,7 @@ const KOCDatetime = {
    * Min 取得最小时间(Moment)
    * Format     是否格式化 默认:true false:不格式化(输出Moment对像) true:格式化 其它:格式化格式
    ********************************/
-  Min: (Value, Format) => {
+  Min: function (Value, Format) {
     Value = KOCDatetime.Info(Value);
     if (!Value) {
       return null;
@@ -174,7 +189,7 @@ const KOCDatetime = {
    * Max 取得最大时间(Moment)
    * Format     是否格式化 默认:true false:不格式化(输出Moment对像) true:格式化 其它:格式化格式
    ********************************/
-  Max: (Value, Format) => {
+  Max: function (Value, Format) {
     Value = KOCDatetime.Info(Value);
     if (!Value) {
       return null;
@@ -194,11 +209,12 @@ const KOCDatetime = {
   /********************************
    * Info 取得时间详细信息
    ********************************/
-  Info: (Value) => {
+  Info: function (Value) {
     if (!KOCDatetime.Valid(Value)) {
       return null;
     }
-    const _Date = {
+    /* C */
+    var _Date = {
       year: -1,
       month: -1,
       day: -1,
@@ -210,9 +226,11 @@ const KOCDatetime = {
     Value = KOCString.ToString(Value).trim();
     Value = Value.split(Value.indexOf("T") > 0 ? "T" : " ");
     if (Value.length > 1) {
-      const _ValueTime = Value[1].split(":");
+      /* C */
+      var _ValueTime = Value[1].split(":");
       if (_ValueTime.length > 2) {
-        const _ValueTimeSecond = _ValueTime[2].split(".");
+        /* C */
+        var _ValueTimeSecond = _ValueTime[2].split(".");
         if (_ValueTimeSecond > 1) {
           _Date.millisecond = KOCString.ToInt(_ValueTimeSecond[1], -1);
         }
@@ -223,7 +241,8 @@ const KOCDatetime = {
       }
       _Date.hour = KOCString.ToInt(_ValueTime[0], -1);
     }
-    let _ValueDate = [Value[0]];
+    /* L */
+    var _ValueDate = [Value[0]];
     if (Value[0].indexOf("-") > 0) {
       _ValueDate = Value[0].split("-");
     } else if (Value[0].indexOf("/") > 0) {
