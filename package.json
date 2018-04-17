@@ -4,7 +4,7 @@
   "description": "koc-common-datetime",
   "main": "index.js",
   "dependencies": {
-    "koc-common-string": "^1.0.26",
+    "koc-common-string": "^1.0.28",
     "moment": "^2.18.1"
   },
   "repository": {
