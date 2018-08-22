@@ -28,7 +28,13 @@ var KOCDatetime = {
       "YYYY.MM.DD HH:mm:ss.SSS",
       "YY-MM-DD HH:mm:ss.SSS",
       "YY/MM/DD HH:mm:ss.SSS",
-      "YY.MM.DD HH:mm:ss.SSS"
+      "YY.MM.DD HH:mm:ss.SSS",
+      "YYYY-MM-DDTHH:mm:ss",
+      "YYYY/MM/DDTHH:mm:ss",
+      "YYYY.MM.DDTHH:mm:ss",
+      "YY-MM-DDTHH:mm:ss",
+      "YY/MM/DDTHH:mm:ss",
+      "YY.MM.DDTHH:mm:ss"
     ]);
     return Value.isValid() ? Value : null;
   },
@@ -210,9 +216,8 @@ var KOCDatetime = {
    * Info 取得时间详细信息
    ********************************/
   Info: function (Value) {
-    if (!KOCDatetime.Valid(Value)) {
-      return null;
-    }
+    Value = KOCDatetime.Object(Value);
+    if (!Value) return null;
     /* C */
     var _Date = {
       year: -1,
@@ -223,8 +228,7 @@ var KOCDatetime = {
       second: -1,
       millisecond: -1
     };
-    Value = KOCString.ToString(Value).trim();
-    Value = Value.split(Value.indexOf("T") > 0 ? "T" : " ");
+    Value = Value.format("YYYY-MM-DD HH:mm:ss").split(" ");
     if (Value.length > 1) {
       /* C */
       var _ValueTime = Value[1].split(":");
@@ -276,6 +280,85 @@ var KOCDatetime = {
       _Date.millisecond = -1;
     }
     return _Date
+  },
+  /********************************
+   * Range 取得时间区间
+   * Day-N:今天
+   * Day-1:昨天
+   * Day-2:前天
+   * Week-N:本周
+   * Week-1:上周
+   * Month-N:本月
+   * Month-1:上月
+   * Quarter-N:本季度
+   * Quarter-1:上季度
+   * Year-N:今年
+   * Year-1:去年
+   * Year-2:前年
+   ********************************/
+  Range: function (type) {
+    var _Date = {
+      Begin: null,
+      BeginString: null,
+      End: null,
+      EndString: null
+    };
+    switch (type) {
+      default:
+      case 'Day-N':
+        _Date.Begin = Moment();
+        _Date.End = Moment();
+        break;
+      case 'Day-1':
+        _Date.Begin = Moment().add(-1, 'day');
+        _Date.End = Moment().add(-1, 'day');
+        break;
+      case 'Day-2':
+        _Date.Begin = Moment().add(-2, 'day');
+        _Date.End = Moment().add(-2, 'day');
+        break;
+      case 'Week-N':
+        _Date.Begin = Moment().startOf('isoWeek');
+        _Date.End = Moment().endOf('isoWeek');
+        break;
+      case 'Week-1':
+        _Date.Begin = Moment().add(-1, 'week').startOf('isoWeek');
+        _Date.End = Moment().add(-1, 'week').endOf('isoWeek');
+        break;
+      case 'Month-N':
+        _Date.Begin = Moment().startOf('month');
+        _Date.End = Moment().endOf('month');
+        break;
+      case 'Month-1':
+        _Date.Begin = Moment().add(-1, 'month').startOf('month');
+        _Date.End = Moment().add(-1, 'month').endOf('month');
+        break;
+      case 'Quarter-N':
+        _Date.Begin = Moment().startOf('quarter');
+        _Date.End = Moment().endOf('quarter');
+        break;
+      case 'Quarter-1':
+        _Date.Begin = Moment().add(-1, 'quarter').startOf('quarter');
+        _Date.End = Moment().add(-1, 'quarter').endOf('quarter');
+        break;
+      case 'Year-N':
+        _Date.Begin = Moment().startOf('year');
+        _Date.End = Moment().endOf('year');
+        break;
+      case 'Year-1':
+        _Date.Begin = Moment().add(-1, 'year').startOf('year');
+        _Date.End = Moment().add(-1, 'year').endOf('year');
+        break;
+      case 'Year-2':
+        _Date.Begin = Moment().add(-2, 'year').startOf('year');
+        _Date.End = Moment().add(-2, 'year').endOf('year');
+        break;
+    }
+    _Date.Begin = KOCDatetime.Min(_Date.Begin, false);
+    _Date.BeginString = _Date.Begin.format('YYYY-MM-DD HH:mm:ss');
+    _Date.End = KOCDatetime.Min(_Date.End, false);
+    _Date.EndString = _Date.End.format('YYYY-MM-DD HH:mm:ss');
+    return _Date;
   }
 };
 
