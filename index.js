@@ -216,8 +216,7 @@ var KOCDatetime = {
    * Info 取得时间详细信息
    ********************************/
   Info: function (Value) {
-    Value = KOCDatetime.Object(Value);
-    if (!Value) return null;
+    if (Moment.isMoment(Value)) Value = Value.format("YYYY-MM-DD HH:mm:ss");
     /* C */
     var _Date = {
       year: -1,
@@ -228,7 +227,7 @@ var KOCDatetime = {
       second: -1,
       millisecond: -1
     };
-    Value = Value.format("YYYY-MM-DD HH:mm:ss").split(" ");
+    Value = Value.split(" ");
     if (Value.length > 1) {
       /* C */
       var _ValueTime = Value[1].split(":");
@@ -270,7 +269,7 @@ var KOCDatetime = {
     if (_Date.day <= 0) {
       _Date.hour = -1;
     }
-    if (_Date.day < 0) {
+    if (_Date.hour < 0) {
       _Date.minute = -1;
     }
     if (_Date.minute < 0) {
