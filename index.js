@@ -287,8 +287,10 @@ var KOCDatetime = {
    * Day-2:前天
    * Week-N:本周
    * Week-1:上周
+   * Week-1-N:上周-本周
    * Month-N:本月
    * Month-1:上月
+   * Month-1-N:上月-本月
    * Quarter-N:本季度
    * Quarter-1:上季度
    * Year-N:今年
@@ -324,6 +326,10 @@ var KOCDatetime = {
         _Date.Begin = Moment().add(-1, 'week').startOf('isoWeek');
         _Date.End = Moment().add(-1, 'week').endOf('isoWeek');
         break;
+      case 'Week-1-N':
+        _Date.Begin = Moment().add(-1, 'week').startOf('isoWeek');
+        _Date.End = Moment().endOf('isoWeek');
+        break;
       case 'Month-N':
         _Date.Begin = Moment().startOf('month');
         _Date.End = Moment().endOf('month');
@@ -331,6 +337,10 @@ var KOCDatetime = {
       case 'Month-1':
         _Date.Begin = Moment().add(-1, 'month').startOf('month');
         _Date.End = Moment().add(-1, 'month').endOf('month');
+        break;
+      case 'Month-1-N':
+        _Date.Begin = Moment().add(-1, 'month').startOf('month');
+        _Date.End = Moment().endOf('month');
         break;
       case 'Quarter-N':
         _Date.Begin = Moment().startOf('quarter');
