@@ -217,6 +217,7 @@ var KOCDatetime = {
    ********************************/
   Info: function (Value) {
     if (Moment.isMoment(Value)) Value = Value.format("YYYY-MM-DD HH:mm:ss");
+    if (!Value) return null;
     /* C */
     var _Date = {
       year: -1,
