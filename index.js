@@ -166,7 +166,7 @@ var KOCDatetime = {
     return retData;
   },
   /********************************
-   * PreciseRangeText 取得时间差值文字(小时、分、秒) 
+   * PreciseRangeText 取得时间差值文字(小时、分、秒)
    ********************************/
   // {
   //   Begin: 开始时间,
