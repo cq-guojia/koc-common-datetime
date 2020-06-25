@@ -249,7 +249,7 @@ var KOCDatetime = {
     if (val.Num !== 0 && Value.Seconds) {
       Text += (Space ? ' 零 ' : '') + Value.Seconds + '秒'
     }
-    val.Desc && (Text ? (Text + ' ' + (Value.After ? '以前' : '以后')) : '刚刚')
+    val.Desc && (Text = Text ? (Text + ' ' + (Value.After ? '以前' : '以后')) : '刚刚')
     return Text
   },
   /********************************
