@@ -238,7 +238,7 @@ var KOCDatetime = {
     }
     if (val.Num !== 0) {
       if (Value.Minutes) {
-        Text += (Space ? ' 零 ' : '') + Value.Minutes + (Text ? '分钟' : '分')
+        Text += (Space ? ' 零 ' : '') + Value.Minutes + (Text ? '分' : '分钟')
         Space = false
         val.Num--
       } else if (Text) {
