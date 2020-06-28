@@ -199,7 +199,6 @@ var KOCDatetime = {
       return ''
     }
     val.Num = KOCString.ToInt(val.Num, -1)
-    val.NumO = val.Num
     /* L */
     var Text = ''
     /* L */
@@ -239,7 +238,7 @@ var KOCDatetime = {
     }
     if (val.Num !== 0) {
       if (Value.Minutes) {
-        Text += (Space ? ' 零 ' : '') + Value.Minutes + (val.NumO === 1 ? '分钟' : '分')
+        Text += (Space ? ' 零 ' : '') + Value.Minutes + (Text ? '分钟' : '分')
         Space = false
         val.Num--
       } else if (Text) {
