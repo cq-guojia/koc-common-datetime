@@ -236,9 +236,11 @@ var KOCDatetime = {
         val.Num--
       }
     }
+    var minutesText = ''
     if (val.Num !== 0) {
       if (Value.Minutes) {
-        Text += (Space ? ' 零 ' : '') + Value.Minutes + (Text ? '分' : '分钟')
+        !Text && (minutesText = '钟')
+        Text += (Space ? ' 零 ' : '') + Value.Minutes + '分'
         Space = false
         val.Num--
       } else if (Text) {
@@ -248,6 +250,8 @@ var KOCDatetime = {
     }
     if (val.Num !== 0 && Value.Seconds) {
       Text += (Space ? ' 零 ' : '') + Value.Seconds + '秒'
+    } else {
+      Text += minutesText
     }
     val.Desc && (Text = Text ? (Text + ' ' + (Value.After ? '以前' : '以后')) : '刚刚')
     return Text

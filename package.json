@@ -1,6 +1,6 @@
 {
   "name": "koc-common-datetime",
-  "version": "1.0.28",
+  "version": "1.0.30",
   "description": "koc-common-datetime",
   "main": "index.js",
   "dependencies": {
