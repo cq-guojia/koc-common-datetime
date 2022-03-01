@@ -457,5 +457,7 @@ var KOCDatetime = {
     return _Date
   }
 }
-
+if ('default' in Moment) {
+  KOCDatetime.Moment = Moment['default']
+}
 module.exports = KOCDatetime
